@@ -7,6 +7,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import com.joaopegoraro.ahpsico.enums.SessionPaymentStatus;
+import com.joaopegoraro.ahpsico.enums.SessionPaymentType;
 import com.joaopegoraro.ahpsico.enums.SessionStatus;
 import com.joaopegoraro.ahpsico.enums.SessionType;
 import com.joaopegoraro.ahpsico.enums.UserRole;
@@ -60,6 +61,10 @@ public class Session {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
+    private SessionPaymentType paymentType;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private UserRole updatedBy;
 
     @Column(nullable = true)
@@ -81,6 +86,8 @@ public class Session {
             status = SessionStatus.NOT_CONFIRMED;
         if (paymentStatus == null)
             paymentStatus = SessionPaymentStatus.NOT_PAYED;
+        if (paymentType == null)
+            paymentType = SessionPaymentType.PARTICULAR;
     }
 
     public Long getId() {
@@ -145,6 +152,14 @@ public class Session {
 
     public void setPaymentStatus(SessionPaymentStatus paymentStatus) {
         this.paymentStatus = paymentStatus;
+    }
+
+    public SessionPaymentType getPaymentType() {
+        return paymentType;
+    }
+
+    public void setPaymentType(SessionPaymentType paymentType) {
+        this.paymentType = paymentType;
     }
 
     public UserRole getUpdatedBy() {
