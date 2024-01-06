@@ -1,6 +1,6 @@
 package com.joaopegoraro.ahpsico.models;
 
-import java.sql.Date;
+import java.util.Date;
 import java.util.Set;
 
 import org.hibernate.annotations.CreationTimestamp;
@@ -22,6 +22,8 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.PrePersist;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
 
 @Entity
 public class Session {
@@ -36,6 +38,7 @@ public class Session {
     @OneToMany(mappedBy = "session", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private Set<Assignment> assignments;
 
+    @Temporal(TemporalType.TIMESTAMP)
     @Column(nullable = false)
     private Date date;
 

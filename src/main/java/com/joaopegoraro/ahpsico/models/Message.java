@@ -1,6 +1,6 @@
 package com.joaopegoraro.ahpsico.models;
 
-import java.sql.Date;
+import java.util.Date;
 import java.util.Set;
 
 import org.hibernate.annotations.CreationTimestamp;
