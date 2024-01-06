@@ -6,14 +6,20 @@ import java.util.Set;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import com.joaopegoraro.ahpsico.enums.UserRole;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
 
 @Entity
 public class User {
@@ -36,12 +42,16 @@ public class User {
     @Column(nullable = false)
     private String occupation;
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private boolean isAdmin;
+    private UserRole role;
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "user_messages", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "message_id"))
     private Set<Message> messages;
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    private Set<Session> sessions;
 
     @Column(nullable = false)
     @CreationTimestamp
@@ -99,12 +109,12 @@ public class User {
         this.occupation = occupation;
     }
 
-    public boolean isAdmin() {
-        return isAdmin;
+    public UserRole getRole() {
+        return role;
     }
 
-    public void setAdmin(boolean isAdmin) {
-        this.isAdmin = isAdmin;
+    public void setRole(UserRole role) {
+        this.role = role;
     }
 
     public Set<Message> getMessages() {
@@ -113,6 +123,14 @@ public class User {
 
     public void setMessages(Set<Message> messages) {
         this.messages = messages;
+    }
+
+    public Set<Session> getSessions() {
+        return sessions;
+    }
+
+    public void setSessions(Set<Session> sessions) {
+        this.sessions = sessions;
     }
 
     public Date getCreatedAt() {
@@ -130,4 +148,5 @@ public class User {
     public void setUpdatedAt(Date updatedAt) {
         this.updatedAt = updatedAt;
     }
+
 }
