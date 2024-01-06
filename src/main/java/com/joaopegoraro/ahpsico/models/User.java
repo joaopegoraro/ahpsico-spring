@@ -20,6 +20,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.PrePersist;
 
 @Entity
 public class User {
@@ -53,6 +54,9 @@ public class User {
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private Set<Session> sessions;
 
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    private Set<Assignment> assignments;
+
     @Column(nullable = false)
     @CreationTimestamp
     private Date createdAt;
@@ -60,6 +64,12 @@ public class User {
     @Column(nullable = false)
     @UpdateTimestamp
     private Date updatedAt;
+
+    @PrePersist
+    public void prePersist() {
+        if (role == null)
+            role = UserRole.PATIENT;
+    }
 
     public Long getId() {
         return id;
@@ -131,6 +141,14 @@ public class User {
 
     public void setSessions(Set<Session> sessions) {
         this.sessions = sessions;
+    }
+
+    public Set<Assignment> getAssignments() {
+        return assignments;
+    }
+
+    public void setAssignments(Set<Assignment> assignments) {
+        this.assignments = assignments;
     }
 
     public Date getCreatedAt() {

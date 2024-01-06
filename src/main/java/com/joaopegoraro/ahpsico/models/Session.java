@@ -1,6 +1,7 @@
 package com.joaopegoraro.ahpsico.models;
 
 import java.sql.Date;
+import java.util.Set;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -9,6 +10,7 @@ import com.joaopegoraro.ahpsico.enums.SessionPaymentStatus;
 import com.joaopegoraro.ahpsico.enums.SessionStatus;
 import com.joaopegoraro.ahpsico.enums.SessionType;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -18,6 +20,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.PrePersist;
 
 @Entity
@@ -29,6 +32,9 @@ public class Session {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
+
+    @OneToMany(mappedBy = "session", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    private Set<Assignment> assignments;
 
     @Column(nullable = false)
     private Date date;
@@ -80,6 +86,14 @@ public class Session {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public Set<Assignment> getAssignments() {
+        return assignments;
+    }
+
+    public void setAssignments(Set<Assignment> assignments) {
+        this.assignments = assignments;
     }
 
     public Date getDate() {
