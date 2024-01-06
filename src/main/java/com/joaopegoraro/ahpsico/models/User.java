@@ -7,6 +7,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import com.joaopegoraro.ahpsico.enums.UserRole;
+import com.joaopegoraro.ahpsico.enums.UserStatus;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -47,6 +48,10 @@ public class User {
     @Column(nullable = false)
     private UserRole role;
 
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private UserStatus status;
+
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "user_messages", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "message_id"))
     private Set<Message> messages;
@@ -69,6 +74,8 @@ public class User {
     public void prePersist() {
         if (role == null)
             role = UserRole.PATIENT;
+        if (status == null)
+            status = UserStatus.NOT_CONFIRMED;
     }
 
     public Long getId() {
@@ -125,6 +132,14 @@ public class User {
 
     public void setRole(UserRole role) {
         this.role = role;
+    }
+
+    public UserStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(UserStatus status) {
+        this.status = status;
     }
 
     public Set<Message> getMessages() {
