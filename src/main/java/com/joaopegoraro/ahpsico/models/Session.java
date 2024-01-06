@@ -9,6 +9,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 import com.joaopegoraro.ahpsico.enums.SessionPaymentStatus;
 import com.joaopegoraro.ahpsico.enums.SessionStatus;
 import com.joaopegoraro.ahpsico.enums.SessionType;
+import com.joaopegoraro.ahpsico.enums.UserRole;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -56,6 +57,13 @@ public class Session {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private SessionPaymentStatus paymentStatus;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private UserRole updatedBy;
+
+    @Column(nullable = true)
+    private String updateMessage;
 
     @Column(nullable = false)
     @CreationTimestamp
@@ -137,6 +145,22 @@ public class Session {
 
     public void setPaymentStatus(SessionPaymentStatus paymentStatus) {
         this.paymentStatus = paymentStatus;
+    }
+
+    public UserRole getUpdatedBy() {
+        return updatedBy;
+    }
+
+    public void setUpdatedBy(UserRole updatedBy) {
+        this.updatedBy = updatedBy;
+    }
+
+    public String getUpdateMessage() {
+        return updateMessage;
+    }
+
+    public void setUpdateMessage(String updateMessage) {
+        this.updateMessage = updateMessage;
     }
 
     public Date getCreatedAt() {
